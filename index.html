@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cabinetry Site Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-stone-50">
+  <div id="root"></div>
+  <script type="text/babel">
+    const theme = {
+      wood: "bg-amber-800",
+      woodText: "text-amber-800",
+      charcoal: "bg-stone-800",
+      charcoalText: "text-stone-800",
+      cream: "bg-stone-100",
+      creamText: "text-stone-100",
+      copper: "bg-orange-600",
+      copperText: "text-orange-600",
+    };
+
+    function Swatch({ label, onClick }) {
+      return (
+        <button onClick={onClick} className="relative group w-full aspect-[4/3] rounded-2xl overflow-hidden border border-stone-300">
+          <div className="absolute inset-0" style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg, #8b5e34 0 2px, #99673a 2px 4px), repeating-linear-gradient(0deg, rgba(0,0,0,.04) 0 6px, rgba(255,255,255,.05) 6px 12px)",
+            backgroundBlendMode: "multiply",
+          }} />
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20" />
+          <span className="absolute bottom-2 left-2 text-white text-sm font-medium drop-shadow">{label}</span>
+        </button>
+      );
+    }
+
+    function Testimonial({ quote, author, role }) {
+      return (
+        <div className="max-w-xl mx-auto text-center">
+          <div className="mx-auto mb-3 text-2xl">“”</div>
+          <p className="text-lg italic">“{quote}”</p>
+          <div className="mt-3 font-semibold">{author}</div>
+          <div className="text-sm text-stone-500">{role}</div>
+        </div>
+      );
+    }
+
+    function Badge({ children }) {
+      return (
+        <span className={\`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm \${theme.copper} text-white\`}>{children}</span>
+      );
+    }
+
+    function DemoCabinetrySite() {
+      const [showZoom, setShowZoom] = React.useState(false);
+      const [activeTab, setActiveTab] = React.useState("home");
+      const testimonials = [
+        { quote: "The 3D preview made decisions effortless—our kitchen looks exactly like the render!", author: "M. Alvarez", role: "Kitchen Remodel" },
+        { quote: "Joinery details are second to none. We loved the step‑by‑step process.", author: "C. Nguyen", role: "Mud Room Built‑ins" },
+        { quote: "Fast estimate after uploading our Mozaik files. Seamless!", author: "R. Patel", role: "Laundry Room" },
+      ];
+      const [ti, setTi] = React.useState(0);
+      React.useEffect(() => {
+        const id = setInterval(() => setTi((i) => (i + 1) % testimonials.length), 4000);
+        return () => clearInterval(id);
+      }, []);
+
+      return (
+        <div className="min-h-screen bg-stone-50 text-stone-900">
+          <style>{\`@keyframes spinY { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }\`}</style>
+          <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-b border-stone-200">
+            <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className={\`w-9 h-9 rounded-xl \${theme.wood}\`}></div>
+                <span className="font-bold tracking-tight">Mozike Cabinetry</span>
+              </div>
+              <nav className="hidden md:flex gap-6 text-sm">
+                {[
+                  ["home", "Home"],
+                  ["gallery", "Craftsmanship"],
+                  ["story", "Craftsman Story"],
+                  ["process", "Process"],
+                  ["portfolio", "Portfolio"],
+                  ["contact", "Free Consultation"],
+                ].map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveTab(key)}
+                    className={\`hover:underline underline-offset-4 \${activeTab === key ? "font-semibold" : "text-stone-600"}\`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </nav>
+              <button
+                onClick={() => setActiveTab("contact")}
+                className={\`hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl \${theme.copper} text-white font-medium\`}
+              >
+                ☎️ Free Consultation
+              </button>
+            </div>
+          </header>
+
+          {activeTab === "home" && (
+            <section className="relative">
+              <div className="max-w-7xl mx-auto px-4 py-14 grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                  <Badge><span className="text-sm">⭐</span> State‑of‑the‑Art</Badge>
+                  <h1 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight">
+                    Custom Cabinetry in <span className={theme.woodText}>3D</span> & <span className={theme.copperText}>AR</span>
+                  </h1>
+                  <p className="mt-4 text-stone-600">
+                    Visualize your kitchen, bathroom, or built‑ins with real‑time 3D rendering, AR placement, and shareable 360° panoramas.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <button onClick={() => setActiveTab("gallery")} className={\`px-4 py-2 rounded-xl \${theme.charcoal} text-white inline-flex items-center gap-2\`}>
+                      Explore Craftsmanship →
+                    </button>
+                    <button onClick={() => setActiveTab("contact")} className="px-4 py-2 rounded-xl border border-stone-300 bg-white inline-flex items-center gap-2">
+                      Get an Estimate ⬇️
+                    </button>
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-2 text-sm text-stone-600">
+                    <span className="px-2 py-1 rounded-lg bg-stone-100">AR preview (iOS/Android)</span>
+                    <span className="px-2 py-1 rounded-lg bg-stone-100">VR walkthrough (WebXR)</span>
+                    <span className="px-2 py-1 rounded-lg bg-stone-100">Mozaik uploads for fast quotes</span>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-stone-200 overflow-hidden shadow-md">
+                  <div className="h-[380px] bg-stone-900 grid place-items-center">
+                    <div className="w-64 h-40 rounded-xl border border-stone-700 bg-gradient-to-br from-amber-800 to-amber-700 shadow-xl" style={{ animation: "spinY 12s linear infinite", transformStyle: "preserve-3d", perspective: "800px" }} />
+                  </div>
+                  <div className="p-3 flex items-center justify-between text-sm bg-stone-50">
+                    <span className="text-stone-600">Interactive preview</span>
+                    <div className="flex gap-2">
+                      <button className="px-3 py-1 rounded-lg border">AR</button>
+                      <button className="px-3 py-1 rounded-lg border">360°</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {activeTab === "gallery" && (
+            <section className="max-w-7xl mx-auto px-4 py-14">
+              <div className="flex items-center gap-3 mb-6">
+                <div>🖼️</div>
+                <h2 className="text-3xl font-bold">Craftsmanship Details</h2>
+              </div>
+              <p className="text-stone-600 mb-8">Zoom into joinery, inlays, and finishes. Click any swatch to view close‑up.</p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {["Quarter‑sawn Oak", "Walnut Inlay", "Charcoal Stain", "Hand‑rubbed Oil", "Dovetail Joinery", "Copper Pulls"].map((label) => (
+                  <Swatch key={label} label={label} onClick={() => setShowZoom(true)} />
+                ))}
+              </div>
+
+              {showZoom && (
+                <div className="fixed inset-0 bg-black/70 z-50 grid place-items-center p-6" onClick={() => setShowZoom(false)}>
+                  <div className="bg-white rounded-2xl max-w-3xl w-full overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                    <div className="aspect-video" style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(90deg, #8b5e34 0 2px, #99673a 2px 4px), repeating-linear-gradient(0deg, rgba(0,0,0,.04) 0 6px, rgba(255,255,255,.05) 6px 12px)",
+                      backgroundBlendMode: "multiply",
+                    }} />
+                    <div className="p-4 flex items-center justify-between">
+                      <div>
+                        <div className="font-semibold">Zoomed Finish</div>
+                        <div className="text-stone-600 text-sm">Pinch/scroll to inspect texture and grain.</div>
+                      </div>
+                      <button onClick={() => setShowZoom(false)} className="px-4 py-2 rounded-xl border">Close</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+          {activeTab === "story" && (
+            <section className="max-w-5xl mx-auto px-4 py-14">
+              <h2 className="text-3xl font-bold mb-4">Craftsman Story</h2>
+              <p className="text-stone-600 mb-6">From raw lumber to heirloom cabinetry — our process blends time‑honored joinery with precision CNC and Mozaik‑driven workflows.</p>
+              <div className="rounded-2xl overflow-hidden border aspect-video grid place-items-center bg-stone-900 text-white">
+                <div className="text-center p-6">
+                  <div className="mx-auto mb-3 text-2xl">🔨</div>
+                  <div className="font-semibold">Video Placeholder</div>
+                  <div className="text-stone-400 text-sm">Drop in your studio documentary or workshop tour here.</div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {activeTab === "process" && (
+            <section className="max-w-6xl mx-auto px-4 py-14">
+              <h2 className="text-3xl font-bold mb-8">How We Work</h2>
+              <ol className="relative border-l-2 border-stone-200 pl-6 space-y-10">
+                {[
+                  { title: "Consult", desc: "Free consultation, room photos, and inspiration upload (Pinterest welcome!).", icon: "☎️" },
+                  { title: "Design", desc: "AI‑guided layout, finish selection, and Mozaik renderings.", icon: "🔧" },
+                  { title: "Build", desc: "Precision CNC + hand finishing. Approve 360° panoramas before install.", icon: "🔨" },
+                  { title: "Install", desc: "White‑glove installation and final walkthrough.", icon: "🏠" },
+                ].map((s, i) => (
+                  <li key={i} className="ml-2">
+                    <div className="absolute -left-3 top-2 w-6 h-6 rounded-full border-2 border-white shadow-inner bg-orange-600" />
+                    <h3 className="text-xl font-semibold flex items-center gap-2"><span>{s.icon}</span>{s.title}</h3>
+                    <p className="text-stone-600 mt-1">{s.desc}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          {activeTab === "portfolio" && (
+            <section className="max-w-7xl mx-auto px-4 py-14">
+              <h2 className="text-3xl font-bold mb-6">Portfolio</h2>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {["All", "Kitchens", "Bathrooms", "Mud Rooms", "Laundry", "Built‑ins"].map((t) => (
+                  <button key={t} className="px-3 py-1.5 rounded-xl border bg-white hover:bg-stone-100 text-sm">{t}</button>
+                ))}
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {Array.from({length: 6}).map((_, i) => (
+                  <div key={i} className="rounded-2xl overflow-hidden border">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-stone-200 to-stone-300" />
+                    <div className="p-3">
+                      <div className="font-semibold">Project {i + 1}</div>
+                      <div className="text-sm text-stone-600">Kitchen • Walnut • Copper Hardware</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section className="px-4 py-12 bg-stone-100">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold">What Clients Say</h3>
+              </div>
+              <Testimonial {...testimonials[ti]} />
+            </div>
+          </section>
+
+          {activeTab === "contact" && (
+            <section className="max-w-3xl mx-auto px-4 py-14">
+              <h2 className="text-3xl font-bold mb-4">Free Consultation</h2>
+              <p className="text-stone-600 mb-6">Tell us about your project. Upload Mozaik exports (BOM CSV, cut list, or render images) for a faster estimate.</p>
+              <form className="grid gap-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <input className="px-3 py-2 rounded-xl border" placeholder="Full Name" />
+                  <input className="px-3 py-2 rounded-xl border" placeholder="Email" type="email" />
+                </div>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <select className="px-3 py-2 rounded-xl border">
+                    <option>Project Type</option>
+                    <option>Kitchen</option>
+                    <option>Bathroom</option>
+                    <option>Mud Room</option>
+                    <option>Laundry</option>
+                    <option>Built‑ins</option>
+                  </select>
+                  <select className="px-3 py-2 rounded-xl border">
+                    <option>Budget</option>
+                    <option>$5k–$15k</option>
+                    <option>$15k–$35k</option>
+                    <option>$35k–$75k</option>
+                    <option>$75k+</option>
+                  </select>
+                  <select className="px-3 py-2 rounded-xl border">
+                    <option>Timeline</option>
+                    <option>0–2 months</option>
+                    <option>2–4 months</option>
+                    <option>4–6 months</option>
+                    <option>6+ months</option>
+                  </select>
+                </div>
+                <textarea className="px-3 py-2 rounded-xl border min-h-[120px]" placeholder="What are you envisioning? Share inspiration links (Pinterest welcome)." />
+                <label className="rounded-xl border-dashed border-2 p-4 grid gap-2 place-items-center">
+                  <div className="text-center">
+                    <div className="font-medium">Upload Mozaik Files (optional)</div>
+                    <div className="text-sm text-stone-600">CSV, DXF, PNG/JPG, PDF</div>
+                  </div>
+                  <input type="file" className="hidden" multiple />
+                </label>
+                <div className="flex items-center gap-2">
+                  <input id="mozaik" type="checkbox" className="w-4 h-4" />
+                  <label htmlFor="mozaik" className="text-sm">I have Mozaik exports for this project</label>
+                </div>
+                <button className={\`mt-2 px-4 py-2 rounded-xl \${theme.copper} text-white font-semibold w-full md:w-auto\`}>Request Free Consult</button>
+              </form>
+            </section>
+          )}
+
+          <footer className="border-t border-stone-200">
+            <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="text-sm text-stone-600">© {new Date().getFullYear()} Mozike Cabinetry • All rights reserved</div>
+              <div className="flex gap-4 text-sm">
+                <a className="hover:underline" href="#">Instagram</a>
+                <a className="hover:underline" href="#">Facebook</a>
+                <a className="hover:underline" href="#">Houzz</a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<DemoCabinetrySite />);
+  </script>
+</body>
+</html>
